@@ -2147,6 +2147,7 @@
 				2457159218B714C400BFE72D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		2457159318B714C400BFE72D /* Build configuration list for PBXNativeTarget "MixiApiSDKSampleTests" */ = {
 			isa = XCConfigurationList;
@@ -2155,6 +2156,7 @@
 				2457159518B714C400BFE72D /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};

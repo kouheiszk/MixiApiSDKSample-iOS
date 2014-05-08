@@ -13,14 +13,18 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    Mixi *mixi = [[Mixi sharedMixi] setupWithType:kMixiApiTypeSelectorMixiApp
-                                         clientId:@"mixiapp-web_?????"
-                                           secret:@"your-secret-string"
-                                      redirectUrl:@"your-redirect-url"];
+    Mixi *mixi = [[Mixi sharedMixi] setupWithType:kMixiApiTypeSelectorGraphApi
+                                         clientId:@"e001c6f009d9486d56fe"
+                                           secret:@"886b71e773a212c42ec15725ea19761913409ca0"];
+    mixi.authorizer = [MixiAppAuthorizer authorizer];
 
     [mixi restore];
     [mixi reportOncePerDay];
-    
+
+    if ([mixi isMixiAppInstalled]) {
+        NSLog(@"mixi offcial client app is installed.");
+    }
+
     return YES;
 }
 							
@@ -49,6 +53,35 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    NSError *error = nil;
+    NSString *apiType = [[Mixi sharedMixi] application:application
+                                               openURL:url
+                                     sourceApplication:sourceApplication
+                                            annotation:annotation
+                                                 error:&error];
+
+    if (error) {
+        // エラーが発生しました
+        NSLog(@"エラーが発生しました");
+    }
+    else if ([apiType isEqualToString:kMixiAppApiTypeToken]) {
+        // 認可処理に成功しました
+        NSLog(@"認可処理に成功しました");
+    }
+    else if ([apiType isEqualToString:kMixiAppApiTypeRevoke]) {
+        // 認可解除処理に成功しました
+        NSLog(@"認可解除処理に成功しました");
+    }
+    else if ([apiType isEqualToString:kMixiAppApiTypeReceiveRequest]) {
+        // リクエストAPIによるリクエスト受け取り
+        NSLog(@"リクエストAPIによるリクエスト受け取り");
+    }
+
+    return YES;
 }
 
 @end
